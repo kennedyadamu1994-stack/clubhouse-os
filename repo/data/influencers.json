@@ -1,0 +1,62 @@
+[
+  {
+    "influencer_id": "in_001",
+    "name": "@eastlondonfootball",
+    "area": "Hackney",
+    "platforms": [
+      "instagram"
+    ],
+    "follower_band": "5k-10k",
+    "niches": [
+      "football",
+      "media"
+    ],
+    "direct_contact_url": "https://instagram.com/example1",
+    "consent_contact": true
+  },
+  {
+    "influencer_id": "in_002",
+    "name": "@grassrootsldn",
+    "area": "Tower Hamlets",
+    "platforms": [
+      "instagram",
+      "tiktok"
+    ],
+    "follower_band": "10k-25k",
+    "niches": [
+      "grassroots",
+      "media"
+    ],
+    "direct_contact_url": "https://instagram.com/example2",
+    "consent_contact": true
+  },
+  {
+    "influencer_id": "in_003",
+    "name": "@netballnortheast",
+    "area": "Islington",
+    "platforms": [
+      "instagram"
+    ],
+    "follower_band": "1k-5k",
+    "niches": [
+      "netball"
+    ],
+    "direct_contact_url": "https://instagram.com/example3",
+    "consent_contact": true
+  },
+  {
+    "influencer_id": "in_004",
+    "name": "@hackneysport",
+    "area": "Hackney",
+    "platforms": [
+      "tiktok"
+    ],
+    "follower_band": "25k+",
+    "niches": [
+      "football",
+      "youth development"
+    ],
+    "direct_contact_url": "https://tiktok.com/@example4",
+    "consent_contact": true
+  }
+]

@@ -1,0 +1,88 @@
+[
+  {
+    "opportunity_id": "sp_001",
+    "title": "London Grassroots Kit Fund",
+    "provider": "Sported London",
+    "amount": "\u00a32,500",
+    "closing_date": "2026-08-21",
+    "eligibility_tags": [
+      "sponsorship",
+      "youth development"
+    ],
+    "sports": [
+      "football",
+      "netball"
+    ],
+    "areas": [
+      "Hackney",
+      "Tower Hamlets",
+      "Islington"
+    ],
+    "apply_url": "https://example.com/kit-fund",
+    "description": "Kit and equipment grants for grassroots clubs in East London."
+  },
+  {
+    "opportunity_id": "sp_002",
+    "title": "Active Communities Grant",
+    "provider": "Sport England",
+    "amount": "\u00a35,000",
+    "closing_date": "2026-09-27",
+    "eligibility_tags": [
+      "youth development",
+      "facilities"
+    ],
+    "sports": [],
+    "areas": [],
+    "apply_url": "https://example.com/active",
+    "description": "National fund for community sport participation projects."
+  },
+  {
+    "opportunity_id": "sp_003",
+    "title": "Hackney Local Business Sponsor Match",
+    "provider": "The NBRH",
+    "amount": "\u00a31,000\u2013\u00a33,000",
+    "closing_date": "2026-08-28",
+    "eligibility_tags": [
+      "sponsorship"
+    ],
+    "sports": [
+      "football"
+    ],
+    "areas": [
+      "Hackney"
+    ],
+    "apply_url": "https://example.com/hackney-match",
+    "description": "Matched introductions to Hackney businesses looking to sponsor a local club."
+  },
+  {
+    "opportunity_id": "sp_004",
+    "title": "Netball Now Development Fund",
+    "provider": "England Netball",
+    "amount": "\u00a31,500",
+    "closing_date": "2026-09-12",
+    "eligibility_tags": [
+      "youth development"
+    ],
+    "sports": [
+      "netball"
+    ],
+    "areas": [],
+    "apply_url": "https://example.com/netball-now",
+    "description": "Development funding for community netball clubs."
+  },
+  {
+    "opportunity_id": "sp_005",
+    "title": "Volunteer Training Bursary",
+    "provider": "London Sport",
+    "amount": "\u00a3800",
+    "closing_date": "2026-08-15",
+    "eligibility_tags": [
+      "volunteers",
+      "coaching"
+    ],
+    "sports": [],
+    "areas": [],
+    "apply_url": "https://example.com/vol-bursary",
+    "description": "Covers coaching and safeguarding course costs for club volunteers."
+  }
+]
