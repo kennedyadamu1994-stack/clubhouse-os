@@ -1,0 +1,51 @@
+import Link from "next/link";
+import { getAdapter } from "@/lib/data";
+
+/**
+ * Pilot-only club directory. Lists every club and links straight into its
+ * dashboard — no token to remember. This is deliberately NOT the model for
+ * real clubs: once other clubs' real data is on the platform, this page
+ * would let anyone browse every club's dashboard, which defeats the
+ * server-side scoping in app/dashboard/[clubToken]/layout.tsx. Keep this
+ * page for solo/internal testing only; gate or remove it before onboarding
+ * real clubs (see DECISIONS.md).
+ */
+export default async function Home() {
+  const db = getAdapter();
+  // getAdapter() has no "list all clubs" method by design (every other page
+  // is scoped to one club via its token) — read the seed file directly here,
+  // the one deliberate exception, only for this internal directory view.
+  const clubs = await db.getAllClubsForDirectory();
+
+  return (
+    <main style={{ minHeight: "100vh", padding: "48px 24px" }}>
+      <div style={{ maxWidth: 640, margin: "0 auto" }}>
+        <h1 style={{ marginBottom: 8 }}>
+          Club House <em style={{ color: "var(--pink)", fontStyle: "normal" }}>OS</em>
+        </h1>
+        <p style={{ color: "var(--dim)", marginBottom: 32, fontSize: "0.9rem" }}>
+          Internal testing directory — pick a club to open its dashboard. Real clubs will
+          only ever use their own private link, not this page.
+        </p>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {clubs.map((c) => (
+            <Link
+              key={c.club_id}
+              href={`/dashboard/${c.club_token}`}
+              className="card"
+              style={{ display: "block", textDecoration: "none" }}
+            >
+              <div style={{ fontFamily: "var(--font-head)", fontSize: "1.15rem" }}>{c.name}</div>
+              <div style={{ color: "var(--dim)", fontSize: "0.85rem", marginTop: 4 }}>
+                {c.sport} · {c.area} · {c.plan_tier === "premium" ? "Premium" : "Core"} plan
+                {c.priorities.length === 0 && " · pre-priorities (empty states)"}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
