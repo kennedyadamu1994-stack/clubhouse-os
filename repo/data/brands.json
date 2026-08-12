@@ -1,0 +1,114 @@
+[
+  {
+    "brand_id": "br_001",
+    "name": "Marsh Lane Coffee",
+    "type": "local_shop",
+    "area": "Hackney",
+    "sectors": [
+      "food_drink"
+    ],
+    "partnership_interests": [
+      "sponsorship",
+      "media"
+    ],
+    "website": "https://example.com/marshlane",
+    "consent_contact": true,
+    "contact": "hello@marshlane.example",
+    "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-07-28",
+    "sponsored": false
+  },
+  {
+    "brand_id": "br_002",
+    "name": "East Peak Physio",
+    "type": "local_shop",
+    "area": "Hackney",
+    "sectors": [
+      "health"
+    ],
+    "partnership_interests": [
+      "sponsorship"
+    ],
+    "website": "https://example.com/eastpeak",
+    "consent_contact": false,
+    "contact": null,
+    "image_url": null,
+    "created_at": "2026-06-14",
+    "sponsored": false
+  },
+  {
+    "brand_id": "br_003",
+    "name": "Nine Yards Print",
+    "type": "local_shop",
+    "area": "Hackney",
+    "sectors": [
+      "print"
+    ],
+    "partnership_interests": [
+      "kit",
+      "sponsorship"
+    ],
+    "website": "https://example.com/nineyards",
+    "consent_contact": true,
+    "contact": "studio@nineyards.example",
+    "image_url": "https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-03-17",
+    "sponsored": false
+  },
+  {
+    "brand_id": "br_004",
+    "name": "Brightside Studio",
+    "type": "corporate",
+    "area": "Hackney",
+    "sectors": [
+      "design"
+    ],
+    "partnership_interests": [
+      "corporate_sport",
+      "sponsorship"
+    ],
+    "website": "https://example.com/brightside",
+    "consent_contact": false,
+    "contact": null,
+    "image_url": null,
+    "created_at": "2026-04-18",
+    "sponsored": false
+  },
+  {
+    "brand_id": "br_005",
+    "name": "Loop Logistics",
+    "type": "corporate",
+    "area": "Newham",
+    "sectors": [
+      "logistics"
+    ],
+    "partnership_interests": [
+      "corporate_sport"
+    ],
+    "website": "https://example.com/looplogistics",
+    "consent_contact": true,
+    "contact": "people@looplogistics.example",
+    "image_url": "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-06-08",
+    "sponsored": true
+  },
+  {
+    "brand_id": "br_006",
+    "name": "Fenchurch & Co",
+    "type": "big_brand",
+    "area": "Tower Hamlets",
+    "sectors": [
+      "recruitment"
+    ],
+    "partnership_interests": [
+      "sponsorship",
+      "wellbeing"
+    ],
+    "website": "https://example.com/fenchurch",
+    "consent_contact": false,
+    "contact": null,
+    "image_url": null,
+    "created_at": "2026-08-07",
+    "sponsored": false
+  }
+]
