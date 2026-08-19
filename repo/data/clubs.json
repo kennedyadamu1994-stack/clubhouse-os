@@ -1,0 +1,30 @@
+[
+  {
+    "club_id": "club_a",
+    "club_token": "hkfc-x7Kq2mZ9pR4wT8vN3sJ6",
+    "name": "Hackney Marshes FC",
+    "sport": "football",
+    "area": "Hackney",
+    "contact_name": "Demo Contact",
+    "contact_email": "demo@example.com",
+    "plan_tier": "premium",
+    "priorities": [
+      "sponsorship",
+      "youth development",
+      "volunteers"
+    ],
+    "goals": "Grow the youth section and secure a kit sponsor for the 2026/27 season.",
+    "kpis": [
+      "New youth sign-ups per month",
+      "Sponsorship income",
+      "Volunteer hours"
+    ],
+    "members_count": 142,
+    "teams_count": 6,
+    "community_note": "Welcome to the Club House pilot! This week: two new funding opportunities close soon \u2014 check your recommendations. \u2014 The NBRH",
+    "triage_complete": false,
+    "created_at": "2026-06-15",
+    "header_image_url": null,
+    "logo_url": null
+  }
+]
