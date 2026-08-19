@@ -1,0 +1,98 @@
+[
+  {
+    "action_key": "contact_us",
+    "label": "Contact us",
+    "section": "tools",
+    "token_cost": 0,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "feature_request",
+    "label": "Request a feature",
+    "section": "tools",
+    "token_cost": 0,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "service_enquiry",
+    "label": "Get in touch about a service",
+    "section": "services",
+    "token_cost": 0,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "player_invite",
+    "label": "Send invite to a player",
+    "section": "outreach",
+    "token_cost": 1,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "person_request",
+    "label": "Request a person",
+    "section": "outreach",
+    "token_cost": 1,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "brand_outreach_local",
+    "label": "Reach out to a local business",
+    "section": "outreach",
+    "token_cost": 1,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "brand_outreach_corporate",
+    "label": "Reach out to a corporate brand",
+    "section": "outreach",
+    "token_cost": 2,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "influencer_outreach",
+    "label": "Reach out to an influencer",
+    "section": "outreach",
+    "token_cost": 1,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "club_outreach",
+    "label": "Club-to-club outreach",
+    "section": "outreach",
+    "token_cost": 1,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "sponsorship_apply",
+    "label": "Apply to sponsorship on our behalf",
+    "section": "outreach",
+    "token_cost": 2,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "sponsorship_apply_complex",
+    "label": "Apply to complex funding on our behalf",
+    "section": "outreach",
+    "token_cost": 3,
+    "button_colour": "pink",
+    "active": true
+  },
+  {
+    "action_key": "list_callout",
+    "label": "List a call-out",
+    "section": "workspace",
+    "token_cost": 1,
+    "button_colour": "pink",
+    "active": true
+  }
+]
