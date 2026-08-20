@@ -1,0 +1,57 @@
+[
+  {
+    "directory_id": "cd_001",
+    "name": "Clapton CFC Community",
+    "sport": "football",
+    "area": "Hackney",
+    "open_to": [
+      "friendly",
+      "coffee"
+    ],
+    "public_contact_url": "https://example.com/clapton",
+    "image_url": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-05-09",
+    "sponsored": true
+  },
+  {
+    "directory_id": "cd_002",
+    "name": "Victoria Park Harriers",
+    "sport": "running",
+    "area": "Tower Hamlets",
+    "open_to": [
+      "shared_training"
+    ],
+    "public_contact_url": "https://example.com/vph",
+    "image_url": null,
+    "created_at": "2026-07-08",
+    "sponsored": false
+  },
+  {
+    "directory_id": "cd_003",
+    "name": "Islington Youth Football",
+    "sport": "football",
+    "area": "Islington",
+    "open_to": [
+      "friendly"
+    ],
+    "public_contact_url": "https://example.com/iyf",
+    "image_url": "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-07-11",
+    "sponsored": false
+  },
+  {
+    "directory_id": "cd_004",
+    "name": "East London Netball Collective",
+    "sport": "netball",
+    "area": "Newham",
+    "open_to": [
+      "friendly",
+      "coffee",
+      "shared_training"
+    ],
+    "public_contact_url": "https://example.com/elnc",
+    "image_url": null,
+    "created_at": "2026-08-07",
+    "sponsored": false
+  }
+]
