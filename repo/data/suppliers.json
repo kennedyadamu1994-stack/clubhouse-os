@@ -1,0 +1,119 @@
+[
+  {
+    "supplier_id": "sup_001",
+    "record_id": "kit_001",
+    "name": "Hackney Team Kit Co.",
+    "product_categories": [
+      "kits",
+      "training_wear"
+    ],
+    "brands_carried": [
+      "Joma",
+      "Macron"
+    ],
+    "price_tier": "\u00a3",
+    "bulk_discount": "10% off orders of 15+ shirts",
+    "customization_offered": "Names, numbers, club crest printing",
+    "sustainability_credentials": "Recycled polyester range available",
+    "safeguarding_compliance": "DBS-checked staff for in-person fittings",
+    "sample_available": true,
+    "lead_time": "2-3 weeks",
+    "minimum_order": "10 units",
+    "delivery_area": "London-wide",
+    "contact": "orders@hackneyteamkit.example",
+    "past_grassroots_clients": "Hackney Marshes FC, Clapton CFC",
+    "image_url": "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-07-15",
+    "last_updated": "2026-08-10",
+    "added_by": "Kennedy",
+    "source_url": null,
+    "credibility_score": 4.5,
+    "verification_status": "verified",
+    "tags": [
+      "kits",
+      "printing",
+      "local"
+    ],
+    "internal_notes": "Good response time, met at the East London grassroots fair.",
+    "plan_gated": true,
+    "sponsored": false
+  },
+  {
+    "supplier_id": "sup_002",
+    "record_id": "kit_002",
+    "name": "Neighbourhood Sports Equipment",
+    "product_categories": [
+      "balls",
+      "cones_and_training_aids",
+      "goals"
+    ],
+    "brands_carried": [
+      "Mitre",
+      "Precision"
+    ],
+    "price_tier": "\u00a3\u00a3",
+    "bulk_discount": "Team accounts get 15% off",
+    "customization_offered": null,
+    "sustainability_credentials": null,
+    "safeguarding_compliance": null,
+    "sample_available": false,
+    "lead_time": "3-5 working days",
+    "minimum_order": null,
+    "delivery_area": "Nationwide",
+    "contact": "sales@nbrhsportsequipment.example",
+    "past_grassroots_clients": "Several London grassroots clubs (name on request)",
+    "image_url": "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-08-01",
+    "last_updated": null,
+    "added_by": "Kennedy",
+    "source_url": "https://nbrhsportsequipment.example",
+    "credibility_score": 4.0,
+    "verification_status": "unverified",
+    "tags": [
+      "equipment",
+      "training_aids"
+    ],
+    "internal_notes": null,
+    "plan_gated": true,
+    "sponsored": false
+  },
+  {
+    "supplier_id": "sup_003",
+    "record_id": "kit_003",
+    "name": "GreenGoal Sustainable Sportswear",
+    "product_categories": [
+      "kits",
+      "training_wear",
+      "accessories"
+    ],
+    "brands_carried": [
+      "GreenGoal (own brand)"
+    ],
+    "price_tier": "\u00a3\u00a3\u00a3",
+    "bulk_discount": null,
+    "customization_offered": "Full custom design service",
+    "sustainability_credentials": "100% recycled materials, carbon-neutral shipping",
+    "safeguarding_compliance": "Safer recruitment policy on file",
+    "sample_available": true,
+    "lead_time": "4-6 weeks",
+    "minimum_order": "20 units",
+    "delivery_area": "UK and Ireland",
+    "contact": null,
+    "past_grassroots_clients": "New to grassroots \u2014 pilot partner programme",
+    "image_url": "https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=400&auto=format&fit=crop",
+    "created_at": "2026-08-18",
+    "last_updated": null,
+    "added_by": "Kennedy",
+    "source_url": "https://greengoal.example",
+    "credibility_score": 3.0,
+    "verification_status": "pending",
+    "tags": [
+      "sustainable",
+      "custom",
+      "premium"
+    ],
+    "internal_notes": "Reached out to us directly \u2014 worth monitoring reviews as they grow.",
+    "plan_gated": true,
+    "sponsored": true
+  }
+]
