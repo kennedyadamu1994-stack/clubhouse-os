@@ -1,0 +1,80 @@
+[
+  {
+    "perk_id": "perk_001",
+    "partner": "PitchPerfect Sports",
+    "title": "20% off team kit & equipment",
+    "category": "equipment",
+    "description": "Discount on training kit, matchday strips, balls, bibs, and cones from a grassroots-focused supplier that does short runs without the big minimum orders.",
+    "offer": "20% off all orders",
+    "redeem_code": "NBRH20",
+    "redeem_url": "https://example.com/perks/pitchperfect",
+    "plan_tiers": ["core", "premium"],
+    "active": true,
+    "created_at": "2026-07-01"
+  },
+  {
+    "perk_id": "perk_002",
+    "partner": "Marsh Lane Coffee",
+    "title": "Free coffee for volunteers on matchday",
+    "category": "food_drink",
+    "description": "A local Hackney cafe offering a free hot drink to anyone volunteering at your matches — show the code at the counter. A small thank-you that helps keep volunteers coming back.",
+    "offer": "Free hot drink per volunteer, matchdays",
+    "redeem_code": "NBRHVOLS",
+    "redeem_url": "https://example.com/perks/marsh-lane",
+    "plan_tiers": ["core", "premium"],
+    "active": true,
+    "created_at": "2026-07-01"
+  },
+  {
+    "perk_id": "perk_003",
+    "partner": "TeamPlan Pro",
+    "title": "6 months free scheduling software",
+    "category": "software",
+    "description": "Fixture scheduling, availability polls, and automated reminders for players and parents. Cuts down the weekly WhatsApp chaos of chasing who's available.",
+    "offer": "6 months free, then 30% off",
+    "redeem_code": null,
+    "redeem_url": "https://example.com/perks/teamplan",
+    "plan_tiers": ["premium"],
+    "active": true,
+    "created_at": "2026-07-01"
+  },
+  {
+    "perk_id": "perk_004",
+    "partner": "Grassroots Coaching Academy",
+    "title": "Discounted Level 1 & 2 coaching badges",
+    "category": "training",
+    "description": "Reduced rates on accredited coaching qualifications for your volunteers and committee. Better-qualified coaches, and a retention perk for the people giving up their time.",
+    "offer": "25% off course fees",
+    "redeem_code": "NBRHCOACH",
+    "redeem_url": "https://example.com/perks/coaching-academy",
+    "plan_tiers": ["core", "premium"],
+    "active": true,
+    "created_at": "2026-07-08"
+  },
+  {
+    "perk_id": "perk_005",
+    "partner": "CityHire Minibuses",
+    "title": "15% off away-day minibus hire",
+    "category": "travel",
+    "description": "Discounted minibus and coach hire for away fixtures and tournaments across London and the South East. Fully insured, with drivers available if you need them.",
+    "offer": "15% off all bookings",
+    "redeem_code": "NBRHTRAVEL",
+    "redeem_url": "https://example.com/perks/cityhire",
+    "plan_tiers": ["premium"],
+    "active": true,
+    "created_at": "2026-07-08"
+  },
+  {
+    "perk_id": "perk_006",
+    "partner": "Active Minds Physio",
+    "title": "Free injury-prevention workshop",
+    "category": "wellbeing",
+    "description": "A one-off workshop for your coaches and players on warm-ups, injury prevention, and basic first response — run by a physio who works with grassroots clubs across the borough.",
+    "offer": "One free workshop per season",
+    "redeem_code": null,
+    "redeem_url": "https://example.com/perks/active-minds",
+    "plan_tiers": ["core", "premium"],
+    "active": true,
+    "created_at": "2026-07-15"
+  }
+]
