@@ -1,0 +1,110 @@
+[
+  {
+    "topic_id": "trend_001",
+    "headline": "New round of grassroots facilities funding opens for 2026/27",
+    "source": "Grassroots Football Weekly",
+    "category": "funding",
+    "source_type": "news",
+    "summary": "A fresh funding pot for pitch improvements, changing rooms, and floodlights has opened to applications from community clubs, with a focus on multi-use and accessible facilities.",
+    "why_it_matters": "Your goals mention securing facilities and growing the youth section — this is exactly the kind of pot worth applying for early, before the round fills up. Check your Sponsorship & Funding tab for the matched listing.",
+    "url": "https://example.com/trending/facilities-funding-2026",
+    "published_at": "2026-08-08",
+    "trending_score": 62,
+    "interest_score": 74,
+    "content_angle": {
+      "title": "A plain-English guide to this year's facilities fund, for clubs who've never applied before",
+      "medium": "Article"
+    },
+    "thumbnail_url": "https://picsum.photos/seed/nbrh-funding-01/640/400"
+  },
+  {
+    "topic_id": "trend_002",
+    "headline": "Why short-form video is outperforming everything for local clubs",
+    "source": "The Sports Marketing Brief",
+    "category": "marketing",
+    "source_type": "discussion",
+    "summary": "Clubs posting short, behind-the-scenes video clips are seeing far more reach and sign-up enquiries than those relying on match-result graphics and photos alone.",
+    "why_it_matters": "You're focused on youth sign-ups — this is a low-cost, high-impact channel for reaching local parents and players. The Content Creation service can help if you don't have someone to film and edit.",
+    "url": "https://example.com/trending/short-form-video-clubs",
+    "published_at": "2026-08-06",
+    "trending_score": 71,
+    "interest_score": 58,
+    "content_angle": {
+      "title": "Three behind-the-scenes clips any volunteer could film this weekend",
+      "medium": "Video essay"
+    },
+    "thumbnail_url": "https://picsum.photos/seed/nbrh-video-02/640/400"
+  },
+  {
+    "topic_id": "trend_003",
+    "headline": "FA rolls out simplified safeguarding renewal process",
+    "source": "Community Sport News",
+    "category": "policy",
+    "source_type": "news",
+    "summary": "The renewal process for safeguarding certificates has been streamlined, with a new online portal cutting the admin burden on volunteer welfare officers.",
+    "why_it_matters": "If your welfare officer's certificate is up for renewal, this should save them a chunk of time. Worth flagging to whoever handles safeguarding at the club before the season starts.",
+    "url": "https://example.com/trending/safeguarding-renewal",
+    "published_at": "2026-08-04",
+    "trending_score": 38,
+    "interest_score": 46,
+    "content_angle": {
+      "title": "What actually changed in the new safeguarding portal, step by step",
+      "medium": "Newsletter blurb"
+    },
+    "thumbnail_url": "https://picsum.photos/seed/nbrh-safeguard-03/640/400"
+  },
+  {
+    "topic_id": "trend_004",
+    "headline": "Local businesses increasing grassroots sponsorship budgets",
+    "source": "Grassroots Football Weekly",
+    "category": "grassroots",
+    "source_type": "news",
+    "summary": "A survey of small and medium local businesses found a growing appetite for sponsoring community sports teams, driven by wanting visible local-community presence over broad advertising.",
+    "why_it_matters": "You're chasing a kit sponsor for 2026/27 — this is a good moment to approach local businesses, and the timing gives you a strong angle. Your Brands & Businesses tab has warm local prospects to start with.",
+    "url": "https://example.com/trending/local-sponsorship-budgets",
+    "published_at": "2026-08-02",
+    "trending_score": 55,
+    "interest_score": 66,
+    "content_angle": {
+      "title": "The pitch local businesses actually respond to right now, according to this survey",
+      "medium": "Article"
+    },
+    "thumbnail_url": "https://picsum.photos/seed/nbrh-sponsor-04/640/400"
+  },
+  {
+    "topic_id": "trend_005",
+    "headline": "Councils expanding free pitch access for youth sessions",
+    "source": "Community Sport News",
+    "category": "community",
+    "source_type": "news",
+    "summary": "Several London boroughs are trialling reduced or free access to council-owned pitches for clubs running youth and disability sessions during off-peak hours.",
+    "why_it_matters": "Growing your youth section means finding affordable pitch time — worth checking whether Hackney is part of this trial, as it could cut one of your biggest recurring costs.",
+    "url": "https://example.com/trending/council-pitch-access",
+    "published_at": "2026-07-30",
+    "trending_score": 47,
+    "interest_score": 63,
+    "content_angle": {
+      "title": "Is your borough part of the free pitch-access trial? Here's how to check",
+      "medium": "Newsletter blurb"
+    },
+    "thumbnail_url": "https://picsum.photos/seed/nbrh-pitch-05/640/400"
+  },
+  {
+    "topic_id": "trend_006",
+    "headline": "Free tools every grassroots club should be using in 2026",
+    "source": "The Sports Marketing Brief",
+    "category": "digital",
+    "source_type": "discussion",
+    "summary": "A roundup of free and low-cost digital tools for scheduling, communication, payments, and social media that are genuinely built for volunteer-run clubs rather than professional setups.",
+    "why_it_matters": "A lot of these overlap with what the Club House already gives you — but a couple on payments and parent communication could be worth a look alongside your Resources tab.",
+    "url": "https://example.com/trending/free-club-tools-2026",
+    "published_at": "2026-07-28",
+    "trending_score": 33,
+    "interest_score": 41,
+    "content_angle": {
+      "title": "Which of these 'free club tools' are actually worth switching to?",
+      "medium": "Infographic"
+    },
+    "thumbnail_url": "https://picsum.photos/seed/nbrh-tools-06/640/400"
+  }
+]
