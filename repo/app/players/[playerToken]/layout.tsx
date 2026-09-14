@@ -1,0 +1,83 @@
+import { notFound } from "next/navigation";
+import { getAdapter } from "@/lib/data";
+import { PlayerHeader } from "@/components/player-header";
+import { PlayerNavLinks, PlayerTabBar, PlayerPageTitle } from "@/components/player-nav";
+import { Greeting, DateLine } from "@/components/greeting";
+import { AppFooter } from "@/components/app-footer";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { IframeResizeReporter } from "@/components/iframe-resize-reporter";
+
+/**
+ * Everything under /players/[playerToken] is scoped here, server-side —
+ * mirrors app/dashboard/[clubToken]/layout.tsx's own structure and
+ * guard pattern exactly (invalid token → designed 404, the client never
+ * receives another player's data), but built as its own layout rather
+ * than a mode on the dashboard one: no plan tier, no token balance, no
+ * club sidebar wordmark, and a completely different 5-section nav
+ * (Home/Search/Calendar/Jobs/Recommendations vs
+ * Outreach/Workspace/Tools/Services) — see PlayerNavLinks' own doc
+ * comment in components/player-nav.tsx for the full reasoning on why
+ * that's a separate component rather than a branch inside NavLinks.
+ *
+ * getPlayerByToken (not getPlayers/gatePlayer) is the right lookup
+ * here — a player looking at their OWN page is the one legitimate
+ * player-facing case where their real name should show; see that
+ * method's own doc comment (lib/data/index.ts) for why it's a
+ * deliberately separate exception from the admin-only
+ * getPlayersUnfiltered.
+ */
+export default async function PlayerLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ playerToken: string }>;
+}) {
+  const { playerToken } = await params;
+  const db = getAdapter();
+  const player = await db.getPlayerByToken(playerToken);
+  if (!player) notFound();
+
+  return (
+    <>
+      <PlayerHeader playerToken={playerToken} />
+      <div className="shell">
+        <IframeResizeReporter />
+        <nav className="sidebar" aria-label="Sections">
+          <div className="sidebar-sticky">
+            <div className="wordmark">
+              <span>
+                <span className="t1">{player.name ?? "Your NBRH"}</span>
+              </span>
+            </div>
+            <PlayerNavLinks playerToken={playerToken} />
+          </div>
+        </nav>
+
+        <div className="main">
+          <header className="deck-head">
+            <div>
+              <p className="eyebrow">
+                <Greeting />
+                {player.name ? `, ${player.name}` : ""}
+              </p>
+              <h1 className="deck-title">
+                <PlayerPageTitle />
+              </h1>
+            </div>
+            <div className="deck-head-controls">
+              <DateLine />
+              <ThemeToggle />
+            </div>
+          </header>
+
+          {children}
+
+          <AppFooter contactHref="https://thenbrh.co.uk" contactExternal />
+        </div>
+
+        <PlayerTabBar playerToken={playerToken} />
+      </div>
+    </>
+  );
+}
