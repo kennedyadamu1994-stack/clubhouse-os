@@ -1,0 +1,32 @@
+[
+  {
+    "perk_id": "pperk_001",
+    "partner": "PitchPerfect Sports",
+    "title": "15% off personal training kit",
+    "category": "equipment",
+    "description": "Discount on boots, gloves, and personal training gear for individual players signed up to The NBRH.",
+    "offer": "15% off all orders",
+    "redeem_code": "NBRHPLAYER15",
+    "redeem_url": "https://example.com/player-perks/pitchperfect"
+  },
+  {
+    "perk_id": "pperk_002",
+    "partner": "FuelUp Nutrition",
+    "title": "Free protein sample box",
+    "category": "food_drink",
+    "description": "A free sample box of recovery shakes and snacks, delivered once per player, no subscription required.",
+    "offer": "Free sample box, one per player",
+    "redeem_code": null,
+    "redeem_url": "https://example.com/player-perks/fuelup"
+  },
+  {
+    "perk_id": "pperk_003",
+    "partner": "MindfulMove",
+    "title": "One free recovery yoga session",
+    "category": "wellbeing",
+    "description": "A single free drop-in recovery/mobility session at any MindfulMove London studio.",
+    "offer": "One free session",
+    "redeem_code": "NBRHMOVE",
+    "redeem_url": "https://example.com/player-perks/mindfulmove"
+  }
+]
