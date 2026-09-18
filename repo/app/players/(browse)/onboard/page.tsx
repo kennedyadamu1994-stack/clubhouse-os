@@ -1,0 +1,572 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { submitOnboarding, type OnboardingSubmission } from "@/lib/players/actions";
+import { usePlayerSession } from "@/components/player-session";
+
+/**
+ * The real onboarding widget, ported into POS (15 Sep — Kennedy: "embed
+ * the onboarding code into the POS. Don't open up another link"). This
+ * was previously a standalone static HTML page hosted outside this
+ * repo, submitting to an external Google Apps Script endpoint; that
+ * pipeline was already replaced by submitOnboarding (lib/players/
+ * actions.ts) earlier in this project, but the FORM ITSELF still lived
+ * externally until now — "Get Started" on POS's own pages pointed out
+ * to thenbrh.co.uk rather than to a page inside this app. This is that
+ * missing piece: the exact same 13 questions, same validation rules
+ * (1-3 motivations, 1+ availability slots, 1+ session formats, the
+ * honeypot field), same field names, ported from vanilla HTML/CSS/JS
+ * into a real React component using this app's own design tokens
+ * (--pink, .btn-pink, var(--surface) etc.) instead of the original
+ * widget's hardcoded colours, so it looks native to POS rather than
+ * pasted in.
+ *
+ * Calls submitOnboarding directly as a Server Action — no API route
+ * round-trip needed the way the original external-widget plan required
+ * (see submitOnboarding's own doc comment: that reasoning predates the
+ * form itself moving into this app). On success (17 Sep, Kennedy: "once
+ * someone has completed onboarding, they should just go back to the
+ * homepage signed in") signs the new player in via the real email
+ * session (usePlayerSession's own login, with forceFresh — see its own
+ * doc comment for why) and redirects to /players (Home), not the
+ * earlier /players/[playerToken]/welcome destination, which broke
+ * outright once onboarding moved to writing into Onboarding List
+ * rather than NEIGHBOURS (O) directly (the token'd welcome page's own
+ * getPlayerByToken lookup could easily run before the array formula
+ * had pulled the new row through, hitting this app's generic 404).
+ *
+ * Moved into the (browse) route group (16 Sep, Kennedy: "ensure that
+ * if someone is going to create an account using the email, the
+ * onboarding form page that they are taken to is still contained
+ * within the POS. Including the header, footer etc, just like
+ * everything else") — this page previously sat as a direct sibling of
+ * (browse), a deliberate choice made when it was first built to give
+ * the 13-step form a distraction-free, full-screen feel with no
+ * sidebar/tab bar competing for space. Kennedy's explicit ask reverses
+ * that: consistency with every other real POS page now matters more
+ * than the standalone feel, so this genuinely inherits the full shell
+ * (header, sidebar, tab bar, footer, header carousel) the same way
+ * Search/Jobs/Calendar/etc. all do. The URL itself is unchanged —
+ * /players/onboard still resolves the same way, since the parenthesised
+ * folder is invisible to routing; only this file's position in the
+ * tree moved.
+ *
+ * Success screen + real sign-in retry (17 Sep, Kennedy: confirmed the
+ * immediate-sign-in behaviour genuinely failed once in practice —
+ * "when it refreshes, the email isn't found... There should be a pop
+ * up at the end of onboarding that shows success and with a button
+ * that refreshes the page and logs them in automatically"). The real
+ * bottleneck was never explained to Kennedy precisely before this:
+ * the write to Onboarding List always succeeds instantly, but signing
+ * the new player IN depends on NEIGHBOURS (O)'s own array formula
+ * having already pulled that row through — a genuine external delay
+ * this app has no control over and can't predict the length of.
+ * attemptSignIn() tries login() a few times with short, increasing
+ * waits (1.5s/3s/4s) before giving up automatically; the success
+ * screen shown via `submitted` state covers both outcomes honestly —
+ * "You're in" and an automatic redirect if a retry catches up in
+ * time, or a plain "Check again" button if it doesn't, rather than
+ * either silently failing (the old behaviour) or promising a fixed
+ * wait time this app genuinely can't guarantee.
+ */
+const LONDON_BOROUGHS = [
+  "Barking and Dagenham", "Barnet", "Bexley", "Brent", "Bromley", "Camden", "Croydon",
+  "Ealing", "Enfield", "Greenwich", "Hackney", "Hammersmith and Fulham", "Haringey",
+  "Harrow", "Havering", "Hillingdon", "Hounslow", "Islington", "Kensington and Chelsea",
+  "Kingston upon Thames", "Lambeth", "Lewisham", "Merton", "Newham", "Redbridge",
+  "Richmond upon Thames", "Southwark", "Sutton", "Tower Hamlets", "Waltham Forest",
+  "Wandsworth", "Westminster",
+];
+
+const ACTIVITIES = [
+  "American Football", "Athletics", "Badminton", "Baseball", "Basketball", "Boxing",
+  "Climbing", "Cricket", "Cycling", "Dance", "Equestrian", "Esports", "Football", "Golf",
+  "Gymnastics", "Handball", "Ice Hockey", "Lacrosse", "Mixed Martial Arts (MMA)", "Netball",
+  "Other", "Padel", "Pilates", "Rowing", "Rugby", "Running", "Sailing", "Skateboarding",
+  "Spin", "Squash", "Surfing", "Swimming", "Table Tennis", "Tennis", "Volleyball",
+  "Weightlifting", "Wrestling", "Yoga",
+];
+
+const MOTIVATIONS = [
+  "Meet New People", "Try Something New", "Stay Fit/Lose Weight", "Learn A New Skill",
+  "Have Fun", "Train", "Compete",
+];
+
+const AVAILABILITY_SLOTS = [
+  "Weekday mornings (before 12pm)", "Weekday afternoons (12pm-5pm)", "Weekday evenings (after 5pm)",
+  "Weekend mornings (before 12pm)", "Weekend afternoons (12pm-5pm)", "Weekend evenings (after 5pm)",
+];
+
+const SESSION_FORMATS = ["Drop In Session", "Training Session", "Competitive League", "Courses/Programmes", "Events/Tournaments"];
+
+const TOTAL_STEPS = 13;
+
+interface FormState {
+  name: string;
+  email: string;
+  phone: string;
+  homeBorough: string;
+  dateOfBirth: string;
+  gender: string;
+  disabilityStatus: string;
+  favouriteActivity: string;
+  experienceLevel: string;
+  yearsPlayingSport: string;
+  motivations: string[];
+  availability: string[];
+  sessionFormatPreference: string[];
+  otherActivitiesInterestedIn: string[];
+  participatingClubs: string;
+  marketingConsent: boolean;
+  website: string; // honeypot
+}
+
+const EMPTY_FORM: FormState = {
+  name: "", email: "", phone: "", homeBorough: "", dateOfBirth: "", gender: "",
+  disabilityStatus: "", favouriteActivity: "", experienceLevel: "", yearsPlayingSport: "",
+  motivations: [], availability: [], sessionFormatPreference: [], otherActivitiesInterestedIn: [],
+  participatingClubs: "", marketingConsent: false, website: "",
+};
+
+function toggleInList(list: string[], value: string, max?: number): string[] {
+  if (list.includes(value)) return list.filter((v) => v !== value);
+  if (max && list.length >= max) return list;
+  return [...list, value];
+}
+
+export default function OnboardPage() {
+  const router = useRouter();
+  const { login } = usePlayerSession();
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+    setForm((f) => ({ ...f, [key]: value }));
+  }
+
+  function isStepValid(): boolean {
+    switch (step) {
+      case 0: return form.name.trim().length > 0;
+      case 1: return /\S+@\S+\.\S+/.test(form.email);
+      case 2: return true; // phone optional
+      case 3: return form.homeBorough !== "";
+      case 4: return form.dateOfBirth !== "" && form.gender !== "" && form.disabilityStatus !== "";
+      case 5: return form.favouriteActivity !== "";
+      case 6: return form.experienceLevel !== "" && form.yearsPlayingSport !== "";
+      case 7: return form.motivations.length >= 1 && form.motivations.length <= 3;
+      case 8: return form.availability.length >= 1;
+      case 9: return form.sessionFormatPreference.length >= 1;
+      case 10: return true; // other interests optional
+      case 11: return true; // participating clubs optional
+      case 12: return true; // consent is optional to check, submission itself is the gate
+      default: return true;
+    }
+  }
+
+  async function handleSubmit() {
+    setSubmitting(true);
+    setSubmitError(null);
+    const submission: OnboardingSubmission = {
+      name: form.name,
+      email: form.email,
+      phone: form.phone || undefined,
+      homeBorough: form.homeBorough,
+      dateOfBirth: form.dateOfBirth,
+      gender: form.gender,
+      disabilityStatus: form.disabilityStatus,
+      favouriteActivity: form.favouriteActivity,
+      experienceLevel: form.experienceLevel,
+      yearsPlayingSport: form.yearsPlayingSport,
+      motivations: form.motivations,
+      availability: form.availability,
+      sessionFormatPreference: form.sessionFormatPreference,
+      otherActivitiesInterestedIn: form.otherActivitiesInterestedIn,
+      participatingClubs: form.participatingClubs || undefined,
+      marketingConsent: form.marketingConsent,
+      website: form.website || undefined,
+    };
+    const result = await submitOnboarding(submission);
+    if (!result.ok) {
+      setSubmitError(result.error);
+      setSubmitting(false);
+      return;
+    }
+    // Real fix (17 Sep, Kennedy: "once someone has completed onboarding,
+    // they should just go back to the homepage signed in" — previously
+    // redirected to /players/[token]/welcome, which hit the not-found
+    // page instead of a real one). The write itself always succeeds
+    // instantly (it lands in Onboarding List directly); signing the
+    // person IN is the part that can genuinely lag, since NEIGHBOURS
+    // (O) only reflects the new row once its own array formula has
+    // recalculated — a real delay outside this app's control (Kennedy,
+    // 17 Sep: confirmed the retry-immediately behaviour genuinely
+    // failed once in practice, exactly the race this always risked).
+    //
+    // submitted flips to true regardless of what happens next — the
+    // form itself is done, the data is genuinely saved, and the
+    // success screen below says so plainly. Sign-in is then attempted
+    // with a few short retries (bypassing the read cache each time —
+    // see login's own doc comment) before giving up and showing a
+    // manual "Check again" button instead of silently landing on Home
+    // still signed out, which is what happened before this fix.
+    setSubmitted(true);
+    setSubmitting(false);
+    await attemptSignIn();
+  }
+
+  async function attemptSignIn() {
+    setSigningIn(true);
+    const RETRY_DELAYS_MS = [1500, 3000, 4000]; // a few short, increasing waits — genuinely trying to catch the array formula catching up, not an arbitrary spin
+    let ok = await login(form.email, true);
+    for (const delay of RETRY_DELAYS_MS) {
+      if (ok) break;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      ok = await login(form.email, true);
+    }
+    setSignedIn(ok);
+    setSigningIn(false);
+    if (ok) {
+      router.push("/players");
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="card outreach-card onboard-success" style={{ maxWidth: 560, margin: "0 auto", textAlign: "center", padding: "48px 32px" }}>
+        <div className="onboard-success-icon" aria-hidden>
+          ✓
+        </div>
+        <h2 style={{ marginBottom: 10 }}>You&apos;re signed up</h2>
+        <p style={{ color: "var(--dim)", fontSize: "0.95rem", marginBottom: 28, maxWidth: "42ch", marginLeft: "auto", marginRight: "auto" }}>
+          Your details are saved. {signingIn ? "Getting you signed in…" : signedIn ? "You're in — taking you to Home." : "We couldn't sign you in automatically just yet — this can take a few moments after signing up."}
+        </p>
+        {signingIn ? (
+          <div className="sr-loading">
+            <div className="sr-spin" />
+          </div>
+        ) : !signedIn ? (
+          <button type="button" className="btn btn-pink" onClick={attemptSignIn}>
+            Check again
+          </button>
+        ) : null}
+      </div>
+    );
+  }
+
+  const progressPct = Math.round(((step + 1) / TOTAL_STEPS) * 100);
+
+  return (
+    <div className="card outreach-card" style={{ maxWidth: 560, margin: "0 auto" }}>
+      <div className="onboard-progress-bar">
+        <div className="onboard-progress-fill" style={{ width: `${progressPct}%` }} />
+      </div>
+      <p className="onboard-progress-text">{progressPct}% complete</p>
+
+      {/* Honeypot — invisible to a real person, never touched by a real player. */}
+      <input
+        type="text"
+        value={form.website}
+        onChange={(e) => update("website", e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)" }}
+        aria-hidden="true"
+      />
+
+      {step === 0 && (
+        <Step number={1} title="What's your name?">
+          <div className="onboard-field">
+            <input
+              type="text"
+              className="onboard-input"
+              placeholder="Enter your full name"
+              value={form.name}
+              onChange={(e) => update("name", e.target.value)}
+              autoFocus
+            />
+          </div>
+        </Step>
+      )}
+
+      {step === 1 && (
+        <Step number={2} title="What's your email address?">
+          <div className="onboard-field">
+            <input
+              type="email"
+              className="onboard-input"
+              placeholder="your.email@example.com"
+              value={form.email}
+              onChange={(e) => update("email", e.target.value)}
+              autoFocus
+            />
+          </div>
+        </Step>
+      )}
+
+      {step === 2 && (
+        <Step number={3} title="What's your phone number?">
+          <div className="onboard-field">
+            <input
+              type="tel"
+              className="onboard-input"
+              placeholder="+44 7XXX XXXXXX"
+              value={form.phone}
+              onChange={(e) => update("phone", e.target.value)}
+              autoFocus
+            />
+          </div>
+        </Step>
+      )}
+
+      {step === 3 && (
+        <Step number={4} title="Which borough do you live in?">
+          <div className="onboard-field">
+            <select
+              className="onboard-select"
+              value={form.homeBorough}
+              onChange={(e) => update("homeBorough", e.target.value)}
+            >
+              <option value="">Please select...</option>
+              {LONDON_BOROUGHS.map((b) => (
+                <option key={b} value={b}>{b}</option>
+              ))}
+            </select>
+          </div>
+        </Step>
+      )}
+
+      {step === 4 && (
+        <Step number={5} title="Tell us a bit about yourself">
+          <div className="onboard-field">
+            <label className="onboard-field-label">What&apos;s your date of birth?</label>
+            <input
+              type="date"
+              className="onboard-input"
+              value={form.dateOfBirth}
+              onChange={(e) => update("dateOfBirth", e.target.value)}
+            />
+          </div>
+          <div className="onboard-field">
+            <label className="onboard-field-label">Gender</label>
+            <select className="onboard-select" value={form.gender} onChange={(e) => update("gender", e.target.value)}>
+              <option value="">Please select...</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-binary">Non-binary</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+          <div className="onboard-field">
+            <label className="onboard-field-label">Do you have a disability?</label>
+            <div className="onboard-radio-group">
+              {["Yes", "No", "Prefer not to say"].map((v) => (
+                <label key={v} className={`onboard-option ${form.disabilityStatus === v ? "selected" : ""}`}>
+                  <input
+                    type="radio"
+                    name="disabilityStatus"
+                    checked={form.disabilityStatus === v}
+                    onChange={() => update("disabilityStatus", v)}
+                  />
+                  {v}
+                </label>
+              ))}
+            </div>
+          </div>
+        </Step>
+      )}
+
+      {step === 5 && (
+        <Step number={6} title="What's your favourite activity?">
+          <div className="onboard-field">
+            <select
+              className="onboard-select"
+              value={form.favouriteActivity}
+              onChange={(e) => update("favouriteActivity", e.target.value)}
+            >
+              <option value="">Please select...</option>
+              {ACTIVITIES.map((a) => (
+                <option key={a} value={a}>{a}</option>
+              ))}
+            </select>
+          </div>
+        </Step>
+      )}
+
+      {step === 6 && (
+        <Step number={7} title="Tell us about your experience">
+          <div className="onboard-field">
+            <label className="onboard-field-label">How experienced are you in your favourite activity?</label>
+            <div className="onboard-radio-group">
+              {["Beginner", "Intermediate", "Advanced", "Expert"].map((v) => (
+                <label key={v} className={`onboard-option ${form.experienceLevel === v ? "selected" : ""}`}>
+                  <input
+                    type="radio"
+                    name="experienceLevel"
+                    checked={form.experienceLevel === v}
+                    onChange={() => update("experienceLevel", v)}
+                  />
+                  {v}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="onboard-field">
+            <label className="onboard-field-label">How many years have you been doing this activity?</label>
+            <input
+              type="number"
+              className="onboard-input"
+              placeholder="5"
+              min={0}
+              max={100}
+              value={form.yearsPlayingSport}
+              onChange={(e) => update("yearsPlayingSport", e.target.value)}
+            />
+          </div>
+        </Step>
+      )}
+
+      {step === 7 && (
+        <Step number={8} title="What are your main goals for participating?">
+          <p className="onboard-instruction">Select up to 3 that matter most to you</p>
+          <div className="onboard-checkbox-group">
+            {MOTIVATIONS.map((v) => (
+              <label key={v} className={`onboard-option ${form.motivations.includes(v) ? "selected" : ""}`}>
+                <input
+                  type="checkbox"
+                  checked={form.motivations.includes(v)}
+                  onChange={() => update("motivations", toggleInList(form.motivations, v, 3))}
+                />
+                {v}
+              </label>
+            ))}
+          </div>
+        </Step>
+      )}
+
+      {step === 8 && (
+        <Step number={9} title="When are you typically available?">
+          <p className="onboard-instruction">Select all that apply</p>
+          <div className="onboard-checkbox-group">
+            {AVAILABILITY_SLOTS.map((v) => (
+              <label key={v} className={`onboard-option ${form.availability.includes(v) ? "selected" : ""}`}>
+                <input
+                  type="checkbox"
+                  checked={form.availability.includes(v)}
+                  onChange={() => update("availability", toggleInList(form.availability, v))}
+                />
+                {v}
+              </label>
+            ))}
+          </div>
+        </Step>
+      )}
+
+      {step === 9 && (
+        <Step number={10} title="What type of sessions interest you most?">
+          <p className="onboard-instruction">Select all that interest you</p>
+          <div className="onboard-checkbox-group">
+            {SESSION_FORMATS.map((v) => (
+              <label key={v} className={`onboard-option ${form.sessionFormatPreference.includes(v) ? "selected" : ""}`}>
+                <input
+                  type="checkbox"
+                  checked={form.sessionFormatPreference.includes(v)}
+                  onChange={() => update("sessionFormatPreference", toggleInList(form.sessionFormatPreference, v))}
+                />
+                {v}
+              </label>
+            ))}
+          </div>
+        </Step>
+      )}
+
+      {step === 10 && (
+        <Step number={11} title="What other activities are you interested in?">
+          <p className="onboard-instruction">Select all activities that interest you (optional)</p>
+          <div className="onboard-activity-grid">
+            {ACTIVITIES.map((a) => (
+              <label
+                key={a}
+                className={`onboard-activity-box ${form.otherActivitiesInterestedIn.includes(a) ? "selected" : ""}`}
+              >
+                <input
+                  type="checkbox"
+                  className="onboard-activity-box-input"
+                  checked={form.otherActivitiesInterestedIn.includes(a)}
+                  onChange={() => update("otherActivitiesInterestedIn", toggleInList(form.otherActivitiesInterestedIn, a))}
+                />
+                {a}
+              </label>
+            ))}
+          </div>
+        </Step>
+      )}
+
+      {step === 11 && (
+        <Step number={12} title="Are there any clubs you're currently involved in?">
+          <div className="onboard-field">
+            <textarea
+              className="onboard-textarea"
+              placeholder="Tell us about any clubs you participate in, your role, and how often you attend"
+              value={form.participatingClubs}
+              onChange={(e) => update("participatingClubs", e.target.value)}
+            />
+          </div>
+        </Step>
+      )}
+
+      {step === 12 && (
+        <Step number={13} title="Almost there — one last thing">
+          <div className="onboard-checkbox-group">
+            <label className={`onboard-option ${form.marketingConsent ? "selected" : ""}`}>
+              <input
+                type="checkbox"
+                checked={form.marketingConsent}
+                onChange={(e) => update("marketingConsent", e.target.checked)}
+              />
+              I agree to be contacted about sessions and offers, and consent to my data being stored
+            </label>
+          </div>
+          {submitError && <p className="onboard-error">{submitError}</p>}
+        </Step>
+      )}
+
+      <div className="onboard-button-group">
+        {step > 0 && (
+          <button type="button" className="btn btn-ghost" onClick={() => setStep((s) => s - 1)} disabled={submitting}>
+            Back
+          </button>
+        )}
+        {step < TOTAL_STEPS - 1 ? (
+          <button
+            type="button"
+            className="btn btn-pink"
+            disabled={!isStepValid()}
+            onClick={() => setStep((s) => s + 1)}
+          >
+            Continue
+          </button>
+        ) : (
+          <button type="button" className="btn btn-pink" disabled={submitting} onClick={handleSubmit}>
+            {submitting ? "Submitting…" : "See My Sessions →"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Step({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="onboard-step-number">Question {number} of {TOTAL_STEPS}</p>
+      <h2 className="onboard-step-title">{title}</h2>
+      {children}
+    </div>
+  );
+}
